@@ -27,6 +27,18 @@ pipeline{
                  junit '**/target/surefire-reports/*.xml'
             }
         }
+     stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=spring-petclinic \
+                    -Dsonar.projectName=spring-petclinic \
+                    -Dsonar.java.binaries=target
+                    '''
+                }
+            }
+        }
     
     }
 }
