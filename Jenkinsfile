@@ -26,24 +26,26 @@ pipeline {
             }
         }
       stage('Upload to Nexus') {
-      steps {
-        nexusArtifactUploader(
-          nexusVersion: 'nexus3',
-          protocol: 'http',
-          nexusUrl: '192.168.40.135:8081',
-          groupId: 'com.example',
-          version: '1.0',
-          repository: 'maven-releases',
-          credentialsId: 'nexus',
-          artifacts: [
-            [artifactId: 'demo',
-             classifier: '',
-             file: 'target/demo-1.0.jar',
-             type: 'jar']
-          ]
-        )
-      }
-    }
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '192.168.40.135:8081',
+                    repository: 'maven-snapshots',
+                    credentialsId: 'nexus',
+                    groupId: 'org.springframework.samples',
+                    version: '4.0.0-SNAPSHOT',
+                    artifacts: [
+                        [
+                            artifactId: 'spring-petclinic',
+                            classifier: '',
+                            file: 'target/spring-petclinic-4.0.0-SNAPSHOT.jar',
+                            type: 'jar'
+                        ]
+                    ]
+                )
+            }
+        }
 
         stage('Publish Test Results') {
             steps {
