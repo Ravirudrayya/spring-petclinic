@@ -25,6 +25,25 @@ pipeline {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
+      stage('Upload to Nexus') {
+      steps {
+        nexusArtifactUploader(
+          nexusVersion: 'nexus3',
+          protocol: 'http',
+          nexusUrl: '192.168.40.135:8081',
+          groupId: 'com.example',
+          version: '1.0',
+          repository: 'maven-releases',
+          credentialsId: 'nexus',
+          artifacts: [
+            [artifactId: 'demo',
+             classifier: '',
+             file: 'target/demo-1.0.jar',
+             type: 'jar']
+          ]
+        )
+      }
+    }
 
         stage('Publish Test Results') {
             steps {
